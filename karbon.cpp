@@ -7,30 +7,32 @@ DualSerialScanner* scanner;
 USBReporter* reporter;
 SPI2InchLandscape* display;
 Freik68* keymap;
+DebugLog* dbg;
 
-#define ______           KeyboardAction()
-#define KY_(CHR)         KeyboardAction(KEY_##CHR)
-#define CN_(CHR)         KeyboardAction(KEY_MEDIA_##CHR) // Consumer
-#define MD_(CHR)         KeyboardAction(Modifier::CHR)
-#define LS_(NUM)         KeyboardAction(ActionType::LayerShift, NUM)
-#define PSH(NUM)         KeyboardAction(ActionType::LayerPush, NUM)
-#define POP()            KeyboardAction(ActionType::LayerPop)
-#define ROT(...)         KeyboardAction({__VA_ARGS__})
-#define CM_(CODE, ...)   KeyboardAction(KEY_##CHR, {__VA_ARGS__})
+#define ______ KeyboardAction()
+#define KY_(CHR) KeyboardAction(KEY_##CHR)
+#define CN_(CHR) KeyboardAction(KEY_MEDIA_##CHR) // Consumer
+#define MD_(CHR) KeyboardAction(Modifier::CHR)
+#define LS_(NUM) KeyboardAction(ActionType::LayerShift, NUM)
+#define PSH(NUM) KeyboardAction(ActionType::LayerPush, NUM)
+#define POP() KeyboardAction(ActionType::LayerPop)
+#define ROT(...) KeyboardAction({__VA_ARGS__})
+#define CM_(CODE, ...) KeyboardAction(KEY_##CHR, {__VA_ARGS__})
 // Just modifiers
-#define MODS(...)        KeyboardAction(0, {__VA_ARGS__})
+#define MODS(...) KeyboardAction(0, {__VA_ARGS__})
 #define TAPHOLD(CHR, KA) KeyboardAction(KEY_##CHR, &KA)
 
 constexpr uint32_t Base = 0;
 constexpr uint32_t Func = 1;
-constexpr uint32_t MacCap = 2;
-constexpr uint32_t Win = 3;
-constexpr uint32_t WinCap = 4;
-constexpr uint32_t WinCtl = 5;
-constexpr uint32_t Linux = 6;
+constexpr uint32_t Win = 2;
+constexpr uint32_t Linux = 3;
+constexpr uint32_t MacCap = 4;
+constexpr uint32_t WinCap = 5;
+constexpr uint32_t WinCtl = 6;
 constexpr uint32_t Raw = 7;
 
 void InitKarbon() {
+  dbg = new SerialLog();
   mpu = new Teensy4();
   matrix = new Split34();
   scanner = new DualSerialScanner();
@@ -53,7 +55,23 @@ ______, ______,  ______,  ______,   ______,     ______,               ______,   
 ______, ______,  ______,  ______,   ______,     ______,               ______,   ______,  ______, ______,    ______,            ______,
 ______, ______,  ______, CN_(VOLUME_INC),   ______,  ______,         ______,  ______,  ______,  ______, ROT(Base, Win, Linux), ______,
         CN_(PREV_TRACK), CN_(VOLUME_DEC), CN_(NEXT_TRACK), ______,  ______,  ______, ______, ______
-}
+},
+{ // Windows
+______,   ______,   ______,   ______, ______, ______,      ______, ______, ______, ______, ______, ______,
+______,   ______,   ______,   ______, ______, ______,      ______, ______, ______, ______, ______, ______,
+MD_(Ctl), ______,   ______,   ______, ______, ______,      ______, ______, ______, ______, ______, ______,
+______,   ______,   ______,   ______, ______, ______,      ______, ______, ______, ______, ______, ______,
+______,   MD_(GUI), MD_(Alt), ______, ______,  ______,    ______, ______,  ______, ______, ______, ______,
+            ______, ______,   ______,           ______,  ______,   ______, ______, ______
+},
+{ // Linux
+______,   ______,   ______,   ______, ______, ______,      ______, ______, ______, ______, ______, ______,
+______,   ______,   ______,   ______, ______, ______,      ______, ______, ______, ______, ______, ______,
+MD_(Ctl), ______,   ______,   ______, ______, ______,      ______, ______, ______, ______, ______, ______,
+______,   ______,   ______,   ______, ______, ______,      ______, ______, ______, ______, ______, ______,
+______,   MD_(GUI), MD_(Alt), ______, ______,  ______,    ______, ______,  ______, ______, ______, ______,
+            ______, ______,   ______,           ______,  ______,   ______, ______, ______
+},
     // clang-format on
   });
 }

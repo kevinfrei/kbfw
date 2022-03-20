@@ -1,6 +1,8 @@
 #pragma once
 #include <stdint.h>
 
+#include "dbg/seriallog.h"
+
 // Which processor/platform is the controller?
 #include "mpu/teensy4.h"
 
@@ -25,6 +27,7 @@ extern DualSerialScanner *scanner;
 extern USBReporter *reporter;
 extern SPI2InchLandscape *display;
 extern Freik68 *keymap;
+extern DebugLog *dbg;
 
 #define allocate InitKarbon
 void InitKarbon();

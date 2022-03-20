@@ -24,7 +24,6 @@ void Teensy4::completePin(uint8_t pin) {
 
 HardwareSerial* Teensy4::getSerialPort(uint8_t which) {
   switch (which) {
-      // case 0: return &Serial;
     case 1:
       return &Serial1;
     case 2:
