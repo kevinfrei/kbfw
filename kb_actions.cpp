@@ -4,6 +4,9 @@
 
 #include "kb_actions.h"
 
+// Transparent slot
+KeyboardAction::KeyboardAction() :action(ActionType::Skip), mods(Modifier::None), code(0), tap(nullptr) {}
+
 // Key
 KeyboardAction::KeyboardAction(uint32_t keyCode)
   : action(ActionType::Key), mods(Modifier::None), code(keyCode), tap(nullptr) {

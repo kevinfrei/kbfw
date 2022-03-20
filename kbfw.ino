@@ -2,10 +2,10 @@
 #include <Adafruit_ST7789.h>
 #include <Adafruit_ST77xx.h>
 
-// Change the include line of this file and you're good to go
 #include <stdint.h>
 #include <vector>
 
+// Change the include line of this file and you're good to go
 #include "karbon.h"
 
 void setup() {

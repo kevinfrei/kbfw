@@ -1,4 +1,5 @@
 #include "karbon.h"
+#include <usb_keyboard.h>
 
 Teensy4* mpu;
 Split34* matrix;
@@ -7,103 +8,52 @@ USBReporter* reporter;
 SPI2InchLandscape* display;
 Freik68* keymap;
 
+#define ______           KeyboardAction()
+#define KY_(CHR)         KeyboardAction(KEY_##CHR)
+#define CN_(CHR)         KeyboardAction(KEY_MEDIA_##CHR) // Consumer
+#define MD_(CHR)         KeyboardAction(Modifier::CHR)
+#define LS_(NUM)         KeyboardAction(ActionType::LayerShift, NUM)
+#define PSH(NUM)         KeyboardAction(ActionType::LayerPush, NUM)
+#define POP()            KeyboardAction(ActionType::LayerPop)
+#define ROT(...)         KeyboardAction({__VA_ARGS__})
+#define CM_(CODE, ...)   KeyboardAction(KEY_##CHR, {__VA_ARGS__})
+// Just modifiers
+#define MODS(...)        KeyboardAction(0, {__VA_ARGS__})
+#define TAPHOLD(CHR, KA) KeyboardAction(KEY_##CHR, &KA)
+
+constexpr uint32_t Base = 0;
+constexpr uint32_t Func = 1;
+constexpr uint32_t MacCap = 2;
+constexpr uint32_t Win = 3;
+constexpr uint32_t WinCap = 4;
+constexpr uint32_t WinCtl = 5;
+constexpr uint32_t Linux = 6;
+constexpr uint32_t Raw = 7;
+
 void InitKarbon() {
   mpu = new Teensy4();
   matrix = new Split34();
   scanner = new DualSerialScanner();
   reporter = new USBReporter();
   display = new SPI2InchLandscape();
-  keymap = new Freik68({{
-    // esc 1 2 3 4 5 6
-    KeyboardAction(0xe5c),
-    KeyboardAction('1'),
-    KeyboardAction('2'),
-    KeyboardAction('3'),
-    KeyboardAction('4'),
-    KeyboardAction('5'),
-
-    // 6 7 8 9 0 -
-    KeyboardAction('6'),
-    KeyboardAction('7'),
-    KeyboardAction('8'),
-    KeyboardAction('9'),
-    KeyboardAction('0'),
-    KeyboardAction('-'),
-
-    // tab q w e r t
-    KeyboardAction(0x1ab),
-    KeyboardAction('q'),
-    KeyboardAction('w'),
-    KeyboardAction('e'),
-    KeyboardAction('r'),
-    KeyboardAction('t'),
-
-    // y u i o p \|
-    KeyboardAction('y'),
-    KeyboardAction('u'),
-    KeyboardAction('i'),
-    KeyboardAction('o'),
-    KeyboardAction('p'),
-    KeyboardAction('\\'),
-
-    // caps a s d f g
-    KeyboardAction(0xca95),
-    KeyboardAction('a'),
-    KeyboardAction('s'),
-    KeyboardAction('d'),
-    KeyboardAction('f'),
-    KeyboardAction('g'),
-
-    // h j k l ; '
-    KeyboardAction('h'),
-    KeyboardAction('j'),
-    KeyboardAction('k'),
-    KeyboardAction('l'),
-    KeyboardAction(';'),
-    KeyboardAction('\''),
-
-    // lshift z x c v b
-    KeyboardAction(0x15f1),
-    KeyboardAction('z'),
-    KeyboardAction('x'),
-    KeyboardAction('c'),
-    KeyboardAction('v'),
-    KeyboardAction('b'),
-
-    // n m , . / rshift
-    KeyboardAction('n'),
-    KeyboardAction('m'),
-    KeyboardAction(','),
-    KeyboardAction('.'),
-    KeyboardAction('/'),
-    KeyboardAction(0x95f1),
-
-    // ctl opt cmd pgup [ backspace
-    KeyboardAction(0x1cf1),
-    KeyboardAction(0x109f),
-    KeyboardAction(0x1c3d),
-    KeyboardAction('^'),
-    KeyboardAction('['),
-    KeyboardAction(0xb59c),
-
-    // space = up fn del `
-    KeyboardAction(' '),
-    KeyboardAction('='),
-    KeyboardAction('^'), 
-    KeyboardAction(0xf5),
-    KeyboardAction(0xde1),
-    KeyboardAction('`'),
-
-    // home pagedown end ]
-    KeyboardAction(0x4033),
-    KeyboardAction('V'),
-    KeyboardAction(0xe5d),
-    KeyboardAction(']'),
-
-    // enter left down right
-    KeyboardAction(0xe5134),
-    KeyboardAction('<'), 
-    KeyboardAction(0xd035),
-    KeyboardAction('>') 
-  }});
+  keymap = new Freik68({
+    // clang-format off
+{ // Base
+KY_(ESC),     KY_(1),    KY_(2),    KY_(3),       KY_(4),          KY_(5),            KY_(6),    KY_(7),     KY_(8),     KY_(9),      KY_(0),         KY_(MINUS),
+KY_(TAB),     KY_(Q),    KY_(W),    KY_(E),       KY_(R),          KY_(T),            KY_(Y),    KY_(U),     KY_(I),     KY_(O),      KY_(P),         KY_(BACKSLASH),
+MD_(Cmd),     KY_(A),    KY_(S),    KY_(D),       KY_(F),          KY_(G),            KY_(H),    KY_(J),     KY_(K),     KY_(L),      KY_(SEMICOLON), KY_(QUOTE),
+MD_(LShf),    KY_(Z),    KY_(X),    KY_(C),       KY_(V),          KY_(B),            KY_(N),    KY_(M),     KY_(COMMA), KY_(PERIOD), KY_(SLASH),     MD_(RShf),
+MD_(LCtl), MD_(LOpt), MD_(LCmd), KY_(PAGE_UP), KY_(LEFT_BRACE), KY_(BACKSPACE),      KY_(SPACE), KY_(EQUAL), KY_(UP),    LS_(Func),      KY_(DELETE), KY_(TILDE),
+                      KY_(HOME), KY_(PAGE_DOWN), KY_(END),       KY_(RIGHT_BRACE),  KY_(ENTER),  KY_(LEFT),  KY_(DOWN),  KY_(RIGHT)
+},
+{ // Func
+______, KY_(F1), KY_(F2), KY_(F3),  KY_(F4),    KY_(F5),              KY_(F6),  KY_(F7), KY_(F8), KY_(F9),  KY_(F10),          KY_(F11),
+______, ______,  ______,  ______,   ______,     ______,               ______,   ______,  ______, ______,    ______,            KY_(F12),
+______, ______,  ______,  ______,   ______,     ______,               ______,   ______,  ______, ______,    ______,            ______,
+______, ______,  ______,  ______,   ______,     ______,               ______,   ______,  ______, ______,    ______,            ______,
+______, ______,  ______, CN_(VOLUME_INC),   ______,  ______,         ______,  ______,  ______,  ______, ROT(Base, Win, Linux), ______,
+        CN_(PREV_TRACK), CN_(VOLUME_DEC), CN_(NEXT_TRACK), ______,  ______,  ______, ______, ______
+}
+    // clang-format on
+  });
 }
