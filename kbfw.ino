@@ -1,6 +1,7 @@
 #include <Adafruit_ST7735.h>
 #include <Adafruit_ST7789.h>
 #include <Adafruit_ST77xx.h>
+#include <SPI.h>
 
 #include <stdint.h>
 #include <vector>
