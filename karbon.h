@@ -21,13 +21,13 @@
 // What are we doing to display information?
 #include "displays/spi_2inch_landscape.h"
 
-extern Teensy4 *mpu;
-extern Split34 *matrix;
-extern DualSerialScanner *scanner;
-extern USBReporter *reporter;
-extern SPI2InchLandscape *display;
-extern Freik68 *keymap;
-extern DebugLog *dbg;
+extern Teensy4* mpu;
+extern Split34* matrix;
+extern DualSerialScanner* scanner;
+extern USBReporter* reporter;
+extern SPI2InchLandscape* display;
+extern Freik68* keymap;
+extern DebugLog* dbg;
 
 #define allocate InitKarbon
 void InitKarbon();

@@ -18,4 +18,4 @@ class DebugLog {
   }
 };
 
-extern DebugLog *dbg;
+extern DebugLog* dbg;

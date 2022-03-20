@@ -4,7 +4,14 @@
 
 class MPU;
 
-enum class PinInfo { TFT_CS, TFT_DC, TFT_RESET, TFT_BACKLIGHT, SPEAKER_GND, SPEAKER_SIGNAL };
+enum class PinInfo {
+  TFT_CS,
+  TFT_DC,
+  TFT_RESET,
+  TFT_BACKLIGHT,
+  SPEAKER_GND,
+  SPEAKER_SIGNAL
+};
 
 class Matrix {
  public:

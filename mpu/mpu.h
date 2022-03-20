@@ -9,7 +9,6 @@ class MPU {
   virtual void configOutputPin(uint8_t pin) = 0;
   virtual void configInputPin(uint8_t pin) = 0;
   virtual void prepPinForRead(uint8_t pin) = 0;
-  virtual void completePin(uint8_t pin)= 0;
-  virtual HardwareSerial *getSerialPort(uint8_t) = 0;
+  virtual void completePin(uint8_t pin) = 0;
+  virtual HardwareSerial* getSerialPort(uint8_t) = 0;
 };
-
