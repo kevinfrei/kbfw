@@ -9,5 +9,6 @@ class KeyboardAction;
 class USBReporter {
  public:
   void setup(MPU*, Keymap*, Display*);
-  void handleActions(const KeyboardAction &a, uint32_t now);
+  void registerAction(const KeyboardAction &a, uint32_t now);
+  void completed();
 };

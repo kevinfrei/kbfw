@@ -10,10 +10,10 @@ class Matrix;
 class Scanner;
 
 class Freik68 : public Keymap {
-  std::vector<std::array<KeyboardAction, 68>> layers;
+  std::vector<std::array<const KeyboardAction, 68>> layers;
 
  public:
-  Freik68(std::initializer_list<std::initializer_list<KeyboardAction>> init_list);
+  Freik68(std::initializer_list<std::initializer_list<const KeyboardAction>> init_list);
   void setup(Matrix*) override;
   std::vector<const KeyboardAction*> mapToActions(Scanner*) override;
 };

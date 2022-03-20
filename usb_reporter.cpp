@@ -4,4 +4,5 @@
 #include "reporter/usb.h"
 
 void USBReporter::setup(MPU*, Keymap*, Display*) {}
-void USBReporter::handleActions(const KeyboardAction& a, uint32_t now) {}
+void USBReporter::registerAction(const KeyboardAction& a, uint32_t now) {}
+void USBReporter::completed() {}
