@@ -55,6 +55,6 @@ USER_CPP_SRCS=\
 ifeq ($(OS),Windows_NT)
 include teensy.win
 else
-include teensy.mk
+include teensy.mac
 endif
 
