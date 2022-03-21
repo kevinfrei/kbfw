@@ -26,6 +26,25 @@ void testSerialMock(MPU* mpu) {
     std::cerr << "s1->read() expected " << read << " but got " << val
               << std::endl;
   }
+  // Make sure it buffers alright
+  for (uint8_t v = 15; v < 75; v += 5) {
+    s1->write(v);
+  }
+  uint8_t prev = 10;
+  uint8_t count = 0;
+  while (s1->available()) {
+    uint8_t t = s1->read();
+    if (t != prev + 5 || t >= 75) {
+      std::cerr << "s1->read() got " << (uint32_t)t << " after "
+                << (uint32_t)prev << std::endl;
+    }
+    prev = t;
+  }
+}
+
+void testDualSerialMatrix(MPU* mpu, Split34* matrix) {
+  // TODO
+  return;
 }
 
 int main(int argc, const char* argv[]) {
@@ -34,6 +53,7 @@ int main(int argc, const char* argv[]) {
   Split34 matrix;
   matrix.setup(&mpu);
   testSerialMock(&mpu);
+  testDualSerialMatrix(&mpu, &matrix);
   std::cout << "Test Completed" << std::endl;
   return 0;
 }

@@ -30,7 +30,10 @@ void SPI2InchLandscape::tick(uint32_t now) {
     // dbg->logln(this->lightOn ? ") to low" : ") to high");
     // digitalWrite(this->backlight, this->lightOn ? LOW : HIGH);
     // Just turn the backlight off for now
-    digitalWrite(this->backlight, LOW);
+    digitalWrite(this->backlight, HIGH);
+    dbg->log("tick ");
+    dbg->log(now / 500);
+    dbg->logln();
     this->lastUpdate = now;
   }
 }
@@ -40,11 +43,15 @@ void SPI2InchLandscape::init() {
   // Anything we're replacing should already be initialized!
   this->dbgFormer = dbg;
   dbg = this;
+  dbg->logln("Switched to Display");
   this->tft->setCursor(0, 0);
   this->tft->setTextWrap(true);
+  this->tft->setTextColor(ST77XX_YELLOW, ST77XX_BLACK);
+  this->tft->setTextSize(1);
 }
 
 void SPI2InchLandscape::logln(const char* str) {
+  this->checkCursor();
   if (str != nullptr) {
     this->tft->println(str);
   } else {
@@ -54,13 +61,17 @@ void SPI2InchLandscape::logln(const char* str) {
     this->dbgFormer->logln(str);
   }
 }
+
 void SPI2InchLandscape::log(const char* str) {
+  this->checkCursor();
   this->tft->print(str);
   if (this->dbgFormer) {
     this->dbgFormer->log(str);
   }
 }
+
 void SPI2InchLandscape::log(uint32_t val) {
+  this->checkCursor();
   switch (this->mode) {
     case ValueMode::Hex:
       this->tft->print(val, HEX);
@@ -76,5 +87,11 @@ void SPI2InchLandscape::log(uint32_t val) {
   }
   if (this->dbgFormer) {
     this->dbgFormer->log(val);
+  }
+}
+
+void SPI2InchLandscape::checkCursor() {
+  if (this->tft->getCursorY() >= this->tft->height()) {
+    this->tft->setCursor(this->tft->getCursorX(), 0);
   }
 }

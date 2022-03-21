@@ -14,6 +14,7 @@ class SPI2InchLandscape : public Display, public DebugLog {
   uint32_t lastUpdate;
   // Former DebugLog thing to nest out to
   DebugLog* dbgFormer;
+  void checkCursor();
 
  public:
   SPI2InchLandscape()

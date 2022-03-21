@@ -28,6 +28,7 @@ void setup() {
   // a Serial debugger?
   dbg->logln("Setting up Display");
   display->setup(mpu, matrix, scanner);
+  display->init();
   // This is the thing that's reporting the keypresses to the device
   // Currently, probably only USB or Bluetooth
   dbg->logln("Setting up Reporter");
