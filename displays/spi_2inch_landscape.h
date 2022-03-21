@@ -12,10 +12,16 @@ class SPI2InchLandscape : public Display, public DebugLog {
   // Display state:
   uint8_t lightOn;
   uint32_t lastUpdate;
+  // Former DebugLog thing to nest out to
+  DebugLog* dbgFormer;
 
  public:
   SPI2InchLandscape()
-    : tft(nullptr), backlight(0xff), lightOn(0), lastUpdate(0) {}
+    : tft(nullptr),
+      backlight(0xff),
+      lightOn(0),
+      lastUpdate(0),
+      dbgFormer(nullptr) {}
   void setup(MPU*, Matrix*, Scanner*) override;
   void tick(uint32_t) override;
 

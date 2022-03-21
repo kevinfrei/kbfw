@@ -36,14 +36,45 @@ void SPI2InchLandscape::tick(uint32_t now) {
 }
 
 void SPI2InchLandscape::init() {
-  // Don't try to nest this. Anything we're replacing should already be initialized!
+  // Don't try to nest this.
+  // Anything we're replacing should already be initialized!
+  this->dbgFormer = dbg;
+  dbg = this;
+  this->tft->setCursor(0, 0);
+  this->tft->setTextWrap(true);
 }
+
 void SPI2InchLandscape::logln(const char* str) {
-  // TODO: Print on the screen, then nest it
+  if (str != nullptr) {
+    this->tft->println(str);
+  } else {
+    this->tft->println();
+  }
+  if (this->dbgFormer) {
+    this->dbgFormer->logln(str);
+  }
 }
 void SPI2InchLandscape::log(const char* str) {
-  // TODO: Print on the screen, then nest it
+  this->tft->print(str);
+  if (this->dbgFormer) {
+    this->dbgFormer->log(str);
+  }
 }
-void SPI2InchLandscape::log(uint32_t num) {
-  // TODO: Print on the screen, then nest it
+void SPI2InchLandscape::log(uint32_t val) {
+  switch (this->mode) {
+    case ValueMode::Hex:
+      this->tft->print(val, HEX);
+      break;
+    case ValueMode::Dec:
+      this->tft->print(val, DEC);
+      break;
+    case ValueMode::Bin:
+      this->tft->print(val, BIN);
+      break;
+    default:
+      break;
+  }
+  if (this->dbgFormer) {
+    this->dbgFormer->log(val);
+  }
 }
