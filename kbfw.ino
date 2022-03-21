@@ -11,8 +11,8 @@
 
 void setup() {
   allocate();
-  // Setup our debug output
-  dbg->setup();
+  // Initialize debug output
+  dbg->init();
   // The device
   dbg->logln("Setting up MPU");
   mpu->setup();

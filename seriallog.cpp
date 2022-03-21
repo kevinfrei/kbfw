@@ -4,7 +4,7 @@
 #include "dbg/debuglog.h"
 #include "dbg/seriallog.h"
 
-void SerialLog::setup() {
+void SerialLog::init() {
   Serial.begin(115200);
 };
 void SerialLog::log(const char* str) {

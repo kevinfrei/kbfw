@@ -9,7 +9,7 @@ class DebugLog {
 
  public:
   DebugLog() : mode(ValueMode::Dec) {}
-  virtual void setup() = 0;
+  virtual void init() = 0;
   virtual void logln(const char* str = 0) = 0;
   virtual void log(const char*) = 0;
   virtual void log(uint32_t) = 0;

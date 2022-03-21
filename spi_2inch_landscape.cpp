@@ -34,3 +34,16 @@ void SPI2InchLandscape::tick(uint32_t now) {
     this->lastUpdate = now;
   }
 }
+
+void SPI2InchLandscape::init() {
+  // Don't try to nest this. Anything we're replacing should already be initialized!
+}
+void SPI2InchLandscape::logln(const char* str) {
+  // TODO: Print on the screen, then nest it
+}
+void SPI2InchLandscape::log(const char* str) {
+  // TODO: Print on the screen, then nest it
+}
+void SPI2InchLandscape::log(uint32_t num) {
+  // TODO: Print on the screen, then nest it
+}
