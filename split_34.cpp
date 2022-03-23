@@ -14,7 +14,7 @@ uint8_t Split34::cols() {
 }
 
 uint8_t Split34::translateWireToScancode(uint8_t val, uint8_t which) {
-  // assert(which == !!which);
+  which = ((which - 2) / 2);
   // First, get the 'local' scan code:
   val--;
   uint8_t code = val / 3;

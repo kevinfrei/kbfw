@@ -56,41 +56,54 @@ uint8_t send(uint8_t i) {
 void testDualSerialMatrix(MPU* mpu, Split34* matrix) {
   // for values 0 to 71:
   // (val * 3 + val % 3 + 1)
-  // right Serial2
-  // left Serial4
-  HardwareSerial* l = mpu->getSerialPort(2);
-  HardwareSerial* r = mpu->getSerialPort(4);
-  l->write(send(0));
-  r->write(send(1));
+
   // Pressed, left
   for (uint8_t i = 0; i < 36; i++) {
     uint8_t snd = send(i);
-    is_equal(matrix->translateWireToScancode(send(i), 0),
+    is_equal(matrix->translateWireToScancode(send(i), 2),
              0x80 | (i / 6) * 12 + i % 6,
              "Simple translation");
   }
   // release, left
   for (uint8_t i = 36; i < 72; i++) {
     uint8_t snd = send(i);
-    is_equal(matrix->translateWireToScancode(send(i), 0),
+    is_equal(matrix->translateWireToScancode(send(i), 2),
              ((i - 36) / 6) * 12 + i % 6,
              "Simple translation");
   }
   // Pressed, right
   for (uint8_t i = 0; i < 36; i++) {
     uint8_t snd = send(i);
-    is_equal(matrix->translateWireToScancode(send(i), 1),
+    is_equal(matrix->translateWireToScancode(send(i), 4),
              0x80 | (i / 6) * 12 + i % 6 + 6,
              "Simple translation");
   }
   // release, left
   for (uint8_t i = 36; i < 72; i++) {
     uint8_t snd = send(i);
-    is_equal(matrix->translateWireToScancode(send(i), 1),
+    is_equal(matrix->translateWireToScancode(send(i), 4),
              ((i - 36) / 6) * 12 + i % 6 + 6,
              "Simple translation");
   }
   return;
+}
+
+void testTyping(MockMPU* mpu,
+                Matrix* mat,
+                Scanner* scanner,
+                Keymap* keymap,
+                USBReporter* rpt) {
+  // right Serial2
+  // left Serial4
+  HardwareSerial* l = mpu->getSerialPort(4);
+  HardwareSerial* r = mpu->getSerialPort(2);
+  r->write(send(1));
+  is_true(scanner->pendingScanCodes(0), "initialCodes");
+  l->write(send(0));
+  while (scanner->pendingScanCodes(0)) {
+    uint8_t code = scanner->getNext();
+    std::cout << "Scan code: " << static_cast<uint32_t>(code) << std::endl;
+  }
 }
 
 int main(int argc, const char* argv[]) {
@@ -106,6 +119,7 @@ int main(int argc, const char* argv[]) {
   keymap.setup(&matrix);
   USBReporter reporter;
   reporter.setup(&mpu, &keymap, nullptr);
+  testTyping(&mpu, &matrix, &scanner, &keymap, &reporter);
   std::cout << "Test Completed" << std::endl;
   return 0;
 }
