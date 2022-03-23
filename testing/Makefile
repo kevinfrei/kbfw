@@ -65,11 +65,14 @@ out/%.${OSUFFIX} : %.cpp
 MOCKSRC = \
 	testwrapper.cpp \
 	mock_mpu.cpp \
-	mock_hwserial.cpp
+	mock_hwserial.cpp \
+	mock_keymap.cpp
 
 FWSRC = \
 	../serial_dual.cpp \
-	../split_34.cpp
+	../split_34.cpp \
+	../kb_actions.cpp \
+	../usb_reporter.cpp
  
 MOCKOBJS = $(addprefix out/, $(patsubst %.cpp, %.${OSUFFIX}, ${MOCKSRC}))
 FWOBJS = $(addprefix out/, $(patsubst ../%, %, $(patsubst %.cpp, %.${OSUFFIX}, ${FWSRC})))

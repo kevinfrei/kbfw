@@ -2,6 +2,7 @@
 
 #include "keymaps/freik68.h"
 #include "matrix/split_34.h"
+#include "mocks/mock_keymap.h"
 #include "mocks/mock_mpu.h"
 #include "reporter/usb.h"
 #include "scanner/serial_dual.h"
@@ -101,6 +102,10 @@ int main(int argc, const char* argv[]) {
   testDualSerialMatrix(&mpu, &matrix);
   DualSerialScanner scanner;
   scanner.setup(&mpu, &matrix);
+  MockKeymap keymap;
+  keymap.setup(&matrix);
+  USBReporter reporter;
+  reporter.setup(&mpu, &keymap, nullptr);
   std::cout << "Test Completed" << std::endl;
   return 0;
 }
