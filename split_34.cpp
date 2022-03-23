@@ -35,7 +35,7 @@ uint8_t Split34::translateWireToScancode(uint8_t val, uint8_t which) {
     code -= 36;
   }
   // Now, adjust the scan code to be linearized between two halves, yeah?
-  code = (code / cols()) * 2 * cols() + 5 + which * cols() - code % cols();
+  code = (code / cols()) * 2 * cols() + which * cols() + code % cols();
   return code | (pressed ? 0x80 : 0);
 }
 

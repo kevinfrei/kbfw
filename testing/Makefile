@@ -31,6 +31,8 @@ endif
 test: out out/testbinary${SFX}
 	out/testbinary${SFX}
 
+build: out out/testbinary${SFX}
+
 out:
 	-mkdir out
 
