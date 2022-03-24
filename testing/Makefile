@@ -57,10 +57,10 @@ endif
 
 # Set up rules for local binaries
 out/%.${OSUFFIX}: ../%.cpp
-	${CXX} ${OPTFLAGS} -c -DTESTING -I.. -Imock_sys ${STDNUM} $< ${OBJFLAG}$@
+	${CXX} ${OPTFLAGS} -MMD -c -DTESTING -I.. -Imock_sys ${STDNUM} $< ${OBJFLAG}$@
 
 out/%.${OSUFFIX} : %.cpp
-	${CXX} ${OPTFLAGS} -c -I.. -Imock_sys ${STDNUM} $< ${OBJFLAG}$@
+	${CXX} ${OPTFLAGS} -MMD -c -I.. -Imock_sys ${STDNUM} $< ${OBJFLAG}$@
 
 MOCKSRC = \
 	testwrapper.cpp \
