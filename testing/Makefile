@@ -71,7 +71,8 @@ FWOBJS = $(addprefix out/, $(patsubst ../%, %, $(patsubst %.cpp, %.${OSUFFIX}, $
 
 OBJS = ${MOCKOBJS} ${FWOBJS}
 
--include $(patsubst %.o, %.d, ${OBJS})
+# Include dependency information
+-include $(patsubst %.${OSUFFIX}, %.d, ${OBJS})
 
 out/testbinary${SFX}: ${OBJS}
 	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^
