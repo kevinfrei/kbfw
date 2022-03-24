@@ -2,21 +2,23 @@
 #include <deque>
 #include <stdint.h>
 
+#include "scancode.h"
+
 class MPU;
 class Matrix;
 
 class Scanner {
  protected:
-  std::deque<uint8_t> codes;
+  std::deque<scancode_t> codes;
 
  public:
   virtual void setup(MPU* mpu, Matrix* m) = 0;
   virtual bool pendingScanCodes(uint32_t now) = 0;
-  uint8_t getNext() {
+  scancode_t getNext() {
     if (codes.empty()) {
-      return 0xff;
+      return scancode_t::error;
     }
-    uint8_t code = codes.front();
+    scancode_t code = codes.front();
     codes.pop_front();
     return code;
   };

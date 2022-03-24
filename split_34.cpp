@@ -2,6 +2,7 @@
 
 #include "matrix/matrix.h"
 #include "matrix/split_34.h"
+#include "scancode.h"
 
 void Split34::setup(MPU* mpu) {}
 
@@ -13,14 +14,15 @@ uint8_t Split34::cols() {
   return 6;
 }
 
-uint8_t Split34::translateWireToScancode(uint8_t val, uint8_t which) {
+scancode_t Split34::translateWireToScancode(uint8_t val, uint8_t which) {
   which = ((which - 2) / 2);
   // First, get the 'local' scan code:
   val--;
   uint8_t code = val / 3;
   uint8_t chk = val % 3;
   if (code % 3 != chk) {
-    return 0x80;
+    // Bad scan code!
+    return scancode_t::error;
   }
   // Code is now between 0 & 71:
   //  0-35 are "pressed" codes
@@ -36,7 +38,7 @@ uint8_t Split34::translateWireToScancode(uint8_t val, uint8_t which) {
   }
   // Now, adjust the scan code to be linearized between two halves, yeah?
   code = (code / cols()) * 2 * cols() + which * cols() + code % cols();
-  return code | (pressed ? 0x80 : 0);
+  return pressed ? press(valToCode(code)) : release(valToCode(code));
 }
 
 uint8_t Split34::getPin(PinInfo req) {

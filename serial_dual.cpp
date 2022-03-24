@@ -13,8 +13,8 @@ bool DualSerialScanner::pendingScanCodes(uint32_t now) {
        ser = mpu->getSerialPort(++port)) {
     while (ser->available()) {
       uint8_t value = ser->read();
-      uint8_t scanCode = matrix->translateWireToScancode(value, port);
-      if ((scanCode & 0x7f) < 0x7f) {
+      scancode_t scanCode = matrix->translateWireToScancode(value, port);
+      if (isValid(scanCode)) {
         codes.push_back(scanCode);
       } else {
         // Error!

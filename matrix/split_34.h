@@ -2,12 +2,13 @@
 #include <stdint.h>
 
 #include "remote_matrix.h"
+#include "scancode.h"
 
 class Split34 : public RemoteMatrix {
  public:
   void setup(MPU*) override;
   uint8_t rows() override;
   uint8_t cols() override;
-  uint8_t translateWireToScancode(uint8_t val, uint8_t which = 0) override;
+  scancode_t translateWireToScancode(uint8_t val, uint8_t which = 0) override;
   uint8_t getPin(PinInfo request) override;
 };

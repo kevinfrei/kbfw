@@ -5,6 +5,7 @@
 #include "mocks/mock_keymap.h"
 #include "mocks/mock_mpu.h"
 #include "reporter/usb.h"
+#include "scancode.h"
 #include "scanner/serial_dual.h"
 
 template <typename A, typename B>
@@ -61,28 +62,28 @@ void testDualSerialMatrix(MPU* mpu, Split34* matrix) {
   for (uint8_t i = 0; i < 36; i++) {
     uint8_t snd = send(i);
     is_equal(matrix->translateWireToScancode(send(i), 2),
-             0x80 | (i / 6) * 12 + i % 6,
+             press(valToCode((i / 6) * 12 + i % 6)),
              "Simple translation");
   }
   // release, left
   for (uint8_t i = 36; i < 72; i++) {
     uint8_t snd = send(i);
     is_equal(matrix->translateWireToScancode(send(i), 2),
-             ((i - 36) / 6) * 12 + i % 6,
+             release(valToCode(((i - 36) / 6) * 12 + i % 6)),
              "Simple translation");
   }
   // Pressed, right
   for (uint8_t i = 0; i < 36; i++) {
     uint8_t snd = send(i);
     is_equal(matrix->translateWireToScancode(send(i), 4),
-             0x80 | (i / 6) * 12 + i % 6 + 6,
+             press(valToCode((i / 6) * 12 + i % 6 + 6)),
              "Simple translation");
   }
   // release, left
   for (uint8_t i = 36; i < 72; i++) {
     uint8_t snd = send(i);
     is_equal(matrix->translateWireToScancode(send(i), 4),
-             ((i - 36) / 6) * 12 + i % 6 + 6,
+             release(valToCode(((i - 36) / 6) * 12 + i % 6 + 6)),
              "Simple translation");
   }
   return;
@@ -95,14 +96,17 @@ void testTyping(MockMPU* mpu,
                 USBReporter* rpt) {
   // right Serial2
   // left Serial4
-  HardwareSerial* l = mpu->getSerialPort(4);
   HardwareSerial* r = mpu->getSerialPort(2);
-  r->write(send(1));
-  is_true(scanner->pendingScanCodes(0), "initialCodes");
-  l->write(send(0));
-  while (scanner->pendingScanCodes(0)) {
-    uint8_t code = scanner->getNext();
-    std::cout << "Scan code: " << static_cast<uint32_t>(code) << std::endl;
+  HardwareSerial* l = mpu->getSerialPort(4);
+  for (uint8_t val = 0; val < 36; val++) {
+    uint8_t scanCode1 = send(val); // "Scan code 6"
+    std::cout << static_cast<uint32_t>(scanCode1) << std::endl;
+    r->write(scanCode1);
+    l->write(scanCode1);
+    while (scanner->pendingScanCodes(0)) {
+      scancode_t code = scanner->getNext();
+      std::cout << "Scan code: " << static_cast<uint32_t>(code) << std::endl;
+    }
   }
 }
 
