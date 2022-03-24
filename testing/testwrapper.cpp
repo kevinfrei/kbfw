@@ -89,26 +89,34 @@ void testDualSerialMatrix(MPU* mpu, Split34* matrix) {
   return;
 }
 
-void testTyping(MockMPU* mpu,
-                Matrix* mat,
-                Scanner* scanner,
-                Keymap* keymap,
-                USBReporter* rpt) {
+void testScanner(MockMPU* mpu, Scanner* scanner) {
   // right Serial2
   // left Serial4
   HardwareSerial* r = mpu->getSerialPort(2);
   HardwareSerial* l = mpu->getSerialPort(4);
+  uint8_t max = 0;
   for (uint8_t val = 0; val < 36; val++) {
-    uint8_t scanCode1 = send(val); // "Scan code 6"
-    std::cout << static_cast<uint32_t>(scanCode1) << std::endl;
+    uint8_t scanCode1 = send(val);
     r->write(scanCode1);
     l->write(scanCode1);
     while (scanner->pendingScanCodes(0)) {
-      scancode_t code = scanner->getNext();
-      std::cout << "Scan code: " << static_cast<uint32_t>(code) << std::endl;
+      scancode_t sc = scanner->getNext();
+      is_true(isValid(sc), "Invalid scan code discovered");
+      uint8_t code = codeToVal(sc);
+      is_true(max <= code || code == max - 5,
+              "non-monotonic scan code discovered");
+      if (max < code) {
+        max = code;
+      }
     }
   }
 }
+
+void testTyping(MockMPU* mpu,
+                Matrix* mat,
+                Scanner* scanner,
+                Keymap* keymap,
+                USBReporter* rpt) {}
 
 int main(int argc, const char* argv[]) {
   MockMPU mpu;
@@ -119,6 +127,7 @@ int main(int argc, const char* argv[]) {
   testDualSerialMatrix(&mpu, &matrix);
   DualSerialScanner scanner;
   scanner.setup(&mpu, &matrix);
+  testScanner(&mpu, &scanner);
   MockKeymap keymap;
   keymap.setup(&matrix);
   USBReporter reporter;
