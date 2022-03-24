@@ -44,6 +44,7 @@ USER_CPP_SRCS=\
 	freik68.cpp \
 	karbon.cpp \
 	kb_actions.cpp \
+	keymap.cpp \
 	seriallog.cpp \
 	serial_dual.cpp \
 	spi_2inch_landscape.cpp \

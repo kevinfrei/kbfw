@@ -2,7 +2,7 @@
 #include <deque>
 #include <stdint.h>
 
-#include "scancode.h"
+#include "../scancode.h"
 
 class MPU;
 class Matrix;

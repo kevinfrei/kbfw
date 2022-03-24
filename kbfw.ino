@@ -45,7 +45,7 @@ void loop() {
     dbg->logln("Found pending scan codes");
     // Collect all the action that should be triggered with what the scanner
     // sees
-    std::vector<const KeyboardAction*> actions = keymap->mapToActions(scanner);
+    std::vector<const KeyboardAction*> actions = keymap->mapToActions(scanner, now);
     // Process each of the actions
     for (const KeyboardAction* a : actions) {
       reporter->registerAction(*a, now);

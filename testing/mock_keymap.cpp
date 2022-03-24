@@ -23,6 +23,7 @@ void MockKeymap::setup(Matrix*) {
   layers = std::array<std::array<KeyboardAction, 5>, 3>{l1, l2, l3};
 }
 
-std::vector<const KeyboardAction*> MockKeymap::mapToActions(Scanner*) {
-  // TODO
+const KeyboardAction* MockKeymap::getActionForScancode(scancode_t code) {
+  // TODO: Fill this is properly
+  return nullptr;
 }

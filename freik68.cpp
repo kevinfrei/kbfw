@@ -23,8 +23,7 @@ void Freik68::setup(Matrix* mat) {
   //
 }
 
-std::vector<const KeyboardAction*> Freik68::mapToActions(Scanner* scanner) {
-  std::vector<const KeyboardAction*> actions;
-  // TODO: Fill in the actions
-  return actions;
+const KeyboardAction* Freik68::getActionForScancode(scancode_t sc) {
+  // TODO: Fix this
+  return nullptr;
 }

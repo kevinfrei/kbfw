@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 #include "remote_matrix.h"
-#include "scancode.h"
+#include "../scancode.h"
 
 class Split34 : public RemoteMatrix {
  public:

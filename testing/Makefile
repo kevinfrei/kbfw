@@ -27,15 +27,6 @@ else
 SFX=
 endif
 
-# Make the directory, the binary, then run it
-test: out out/testbinary${SFX}
-	out/testbinary${SFX}
-
-build: out out/testbinary${SFX}
-
-out:
-	-mkdir out
-
 # Size is larger than -O3 lame lame lame, clang
 # OPTFLAGS=-flto -Oz
 # Speed:
@@ -72,6 +63,7 @@ FWSRC = \
 	../serial_dual.cpp \
 	../split_34.cpp \
 	../kb_actions.cpp \
+	../keymap.cpp \
 	../usb_reporter.cpp
  
 MOCKOBJS = $(addprefix out/, $(patsubst %.cpp, %.${OSUFFIX}, ${MOCKSRC}))
@@ -79,5 +71,16 @@ FWOBJS = $(addprefix out/, $(patsubst ../%, %, $(patsubst %.cpp, %.${OSUFFIX}, $
 
 OBJS = ${MOCKOBJS} ${FWOBJS}
 
+-include $(patsubst %.o, %.d, ${OBJS})
+
 out/testbinary${SFX}: ${OBJS}
 	${CXX} ${OPTFLAGS} ${IMGFLAG}$@ $^
+
+# Make the directory, the binary, then run it
+test: out out/testbinary${SFX}
+	@out/testbinary${SFX}
+
+build: out out/testbinary${SFX}
+
+out:
+	-mkdir out

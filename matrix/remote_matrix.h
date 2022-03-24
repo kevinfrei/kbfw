@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 #include "matrix.h"
-#include "scancode.h"
+#include "../scancode.h"
 
 class RemoteMatrix : public Matrix {
  public:
