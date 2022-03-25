@@ -1,8 +1,8 @@
 #pragma once
 #include <stdint.h>
 
-#include "remote_matrix.h"
 #include "../scancode.h"
+#include "remote_matrix.h"
 
 class Split34 : public RemoteMatrix {
  public:

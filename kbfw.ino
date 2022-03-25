@@ -24,8 +24,8 @@ void setup() {
   // scan codes (0-127, plus the hi-bit flag as a pressed/released)
   dbg->logln("Setting up Scanner");
   scanner->setup(mpu, matrix);
-  // This is potentially a NOP, or an actual LCD, or maybe something else, like
-  // a Serial debugger?
+  // This is potentially a NOP, or an actual LCD, or maybe something else,
+  // like a Serial debugger?
   dbg->logln("Setting up Display");
   display->setup(mpu, matrix, scanner);
   // This configures the display for debugging output also
@@ -44,9 +44,10 @@ void loop() {
   // Check to see if there are any scan codes for us to process
   if (scanner->pendingScanCodes(now)) {
     dbg->logln("Found pending scan codes");
-    // Collect all the action that should be triggered with what the scanner
-    // sees
-    std::vector<const KeymapAction*> actions = keymap->mapToActions(scanner, now);
+    // Collect all the action that should be triggered with what the
+    // scanner sees
+    std::vector<const KeymapAction*> actions =
+      keymap->mapToActions(scanner, now);
     // Process each of the actions
     for (const KeymapAction* a : actions) {
       kbstate->registerAction(a, now);

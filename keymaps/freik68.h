@@ -18,7 +18,7 @@ class Freik68 : public Keymap {
   const KeymapAction* getActionForScancode(scancode_t) override;
 
  public:
-  Freik68(std::initializer_list<std::initializer_list<const KeymapAction>>
-            init_list);
+  Freik68(
+    std::initializer_list<std::initializer_list<const KeymapAction>> init_list);
   void setup(Matrix*) override;
 };

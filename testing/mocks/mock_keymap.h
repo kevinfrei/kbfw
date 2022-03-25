@@ -3,8 +3,8 @@
 #include <initializer_list>
 #include <vector>
 
-#include "scancode.h"
 #include "keymaps/keymap.h"
+#include "scancode.h"
 
 class Matrix;
 class KeymapAction;

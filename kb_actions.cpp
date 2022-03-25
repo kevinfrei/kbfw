@@ -48,8 +48,7 @@ KeymapAction::KeymapAction(std::initializer_list<uint8_t> rotate)
 }
 
 // Combo key: Key plus a set of modifiers
-KeymapAction::KeymapAction(uint32_t keyCode,
-                               std::initializer_list<Modifier> ms)
+KeymapAction::KeymapAction(uint32_t keyCode, std::initializer_list<Modifier> ms)
   : action(ActionType::ComboKey),
     mods(Modifier::None),
     code(keyCode),
