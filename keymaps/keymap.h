@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <vector>
 
-#include "../scancode.h"
 #include "../kbstate/kbstate.h"
+#include "../scancode.h"
 
 class Matrix;
 class Scanner;
@@ -16,5 +16,7 @@ class Keymap {
 
  public:
   virtual void setup(Matrix*) = 0;
-  virtual std::vector<const KeymapAction*> mapToActions(KBState*, Scanner*, uint32_t);
+  virtual std::vector<const KeymapAction*> mapToActions(KBState*,
+                                                        Scanner*,
+                                                        uint32_t);
 };

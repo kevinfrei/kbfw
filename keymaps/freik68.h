@@ -5,8 +5,8 @@
 #include <vector>
 
 #include "../kb_actions.h"
-#include "../scancode.h"
 #include "../kbstate/kbstate.h"
+#include "../scancode.h"
 #include "keymap.h"
 
 class Matrix;
