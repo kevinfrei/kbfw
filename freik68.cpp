@@ -23,7 +23,8 @@ void Freik68::setup(Matrix* mat) {
   //
 }
 
-const KeymapAction* Freik68::getActionForScancode(scancode_t sc) {
+const KeymapAction* Freik68::getActionForScancode(KBState* state,
+                                                  scancode_t sc) {
   // TODO: Fix this
   return nullptr;
 }

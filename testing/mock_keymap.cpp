@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "kb_actions.h"
+#include "kbstate/kbstate.h"
 #include "matrix/matrix.h"
 #include "mocks/mock_keymap.h"
 
@@ -23,7 +24,8 @@ void MockKeymap::setup(Matrix*) {
   layers = std::array<std::array<KeymapAction, 5>, 3>{l1, l2, l3};
 }
 
-const KeymapAction* MockKeymap::getActionForScancode(scancode_t code) {
+const KeymapAction* MockKeymap::getActionForScancode(KBState* state,
+                                                     scancode_t code) {
   // TODO: Fill this is properly
   return nullptr;
 }

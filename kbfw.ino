@@ -47,7 +47,7 @@ void loop() {
     // Collect all the action that should be triggered with what the
     // scanner sees
     std::vector<const KeymapAction*> actions =
-      keymap->mapToActions(scanner, now);
+      keymap->mapToActions(kbstate, scanner, now);
     // Process each of the actions
     for (const KeymapAction* a : actions) {
       kbstate->registerAction(a, now);

@@ -3,6 +3,7 @@
 #include <initializer_list>
 #include <vector>
 
+#include "kbstate/kbstate.h"
 #include "keymaps/keymap.h"
 #include "scancode.h"
 
@@ -14,7 +15,7 @@ class MockKeymap : public Keymap {
   std::array<std::array<KeymapAction, 5>, 3> layers;
 
  protected:
-  const KeymapAction* getActionForScancode(scancode_t) override;
+  const KeymapAction* getActionForScancode(KBState*, scancode_t) override;
 
  public:
   void setup(Matrix*) override;

@@ -6,6 +6,7 @@
 
 #include "../kb_actions.h"
 #include "../scancode.h"
+#include "../kbstate/kbstate.h"
 #include "keymap.h"
 
 class Matrix;
@@ -15,7 +16,7 @@ class Freik68 : public Keymap {
   std::vector<std::array<const KeymapAction, 68>> layers;
 
  protected:
-  const KeymapAction* getActionForScancode(scancode_t) override;
+  const KeymapAction* getActionForScancode(KBState*, scancode_t) override;
 
  public:
   Freik68(
