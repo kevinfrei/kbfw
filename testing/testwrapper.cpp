@@ -1,12 +1,15 @@
 #include <iostream>
 
+#include "dbg/debuglog.h"
+#include "kbstate/kbstate.h"
 #include "keymaps/freik68.h"
 #include "matrix/split_34.h"
 #include "mocks/mock_keymap.h"
 #include "mocks/mock_mpu.h"
-#include "reporter/usb.h"
 #include "scancode.h"
 #include "scanner/serial_dual.h"
+
+DebugLog* dbg;
 
 template <typename A, typename B>
 void is_equal(A val1, B val2, const char* descr) {
@@ -116,7 +119,7 @@ void testTyping(MockMPU* mpu,
                 Matrix* mat,
                 Scanner* scanner,
                 Keymap* keymap,
-                USBReporter* rpt) {}
+                KBState* kbstate) {}
 
 int main(int argc, const char* argv[]) {
   MockMPU mpu;
@@ -130,9 +133,9 @@ int main(int argc, const char* argv[]) {
   testScanner(&mpu, &scanner);
   MockKeymap keymap;
   keymap.setup(&matrix);
-  USBReporter reporter;
-  reporter.setup(&mpu, &keymap, nullptr);
-  testTyping(&mpu, &matrix, &scanner, &keymap, &reporter);
+  KBState kbstate;
+  kbstate.setup(&mpu, &keymap, nullptr);
+  testTyping(&mpu, &matrix, &scanner, &keymap, &kbstate);
   std::cout << "Test Completed" << std::endl;
   return 0;
 }

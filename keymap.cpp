@@ -4,11 +4,11 @@
 #include "scancode.h"
 #include "scanner/scanner.h"
 
-std::vector<const KeyboardAction*> Keymap::mapToActions(Scanner* scanner, uint32_t now) {
-  std::vector<const KeyboardAction*> actions;
+std::vector<const KeymapAction*> Keymap::mapToActions(Scanner* scanner, uint32_t now) {
+  std::vector<const KeymapAction*> actions;
   while (scanner->pendingScanCodes(now)) {
     scancode_t code = scanner->getNext();
-    const KeyboardAction* ka = this->getActionForScancode(code);
+    const KeymapAction* ka = this->getActionForScancode(code);
     actions.push_back(ka);
   }
   return actions;

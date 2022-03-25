@@ -28,11 +28,12 @@ void setup() {
   // a Serial debugger?
   dbg->logln("Setting up Display");
   display->setup(mpu, matrix, scanner);
+  // This configures the display for debugging output also
   display->init();
   // This is the thing that's reporting the keypresses to the device
   // Currently, probably only USB or Bluetooth
   dbg->logln("Setting up Reporter");
-  reporter->setup(mpu, keymap, display);
+  kbstate->setup(mpu, keymap, display);
   dbg->logln("Setup complete");
 }
 
@@ -45,13 +46,13 @@ void loop() {
     dbg->logln("Found pending scan codes");
     // Collect all the action that should be triggered with what the scanner
     // sees
-    std::vector<const KeyboardAction*> actions = keymap->mapToActions(scanner, now);
+    std::vector<const KeymapAction*> actions = keymap->mapToActions(scanner, now);
     // Process each of the actions
-    for (const KeyboardAction* a : actions) {
-      reporter->registerAction(*a, now);
+    for (const KeymapAction* a : actions) {
+      kbstate->registerAction(a, now);
     }
     // Now report the actions
-    reporter->completed();
+    kbstate->completeActions();
     dbg->logln("Codes reported");
   }
   // We allow an update to the 'display' every millisecond

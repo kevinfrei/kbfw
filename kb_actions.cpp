@@ -5,21 +5,21 @@
 #include "kb_actions.h"
 
 // Transparent slot
-KeyboardAction::KeyboardAction()
+KeymapAction::KeymapAction()
   : action(ActionType::Skip), mods(Modifier::None), code(0), tap(nullptr) {}
 
 // Key
-KeyboardAction::KeyboardAction(uint32_t keyCode)
+KeymapAction::KeymapAction(uint32_t keyCode)
   : action(ActionType::Key), mods(Modifier::None), code(keyCode), tap(nullptr) {
   // TODO: check for a consumer key
 }
 
 // Modifier
-KeyboardAction::KeyboardAction(Modifier mod)
+KeymapAction::KeymapAction(Modifier mod)
   : action(ActionType::Modifier), mods(mod), code(0), tap(nullptr) {}
 
 // Layer "things"
-KeyboardAction::KeyboardAction(ActionType layerAction, uint8_t val)
+KeymapAction::KeymapAction(ActionType layerAction, uint8_t val)
   : action(layerAction), mods(Modifier::None), code(val), tap(nullptr) {
   if ((val == 0xFF) != (layerAction == ActionType::LayerPop) &&
       (layerAction != ActionType::LayerPop &&
@@ -30,7 +30,7 @@ KeyboardAction::KeyboardAction(ActionType layerAction, uint8_t val)
 }
 
 // Layer Rotation
-KeyboardAction::KeyboardAction(std::initializer_list<uint8_t> rotate)
+KeymapAction::KeymapAction(std::initializer_list<uint8_t> rotate)
   : action(ActionType::LayerRotate),
     mods(Modifier::None),
     code(0),
@@ -48,7 +48,7 @@ KeyboardAction::KeyboardAction(std::initializer_list<uint8_t> rotate)
 }
 
 // Combo key: Key plus a set of modifiers
-KeyboardAction::KeyboardAction(uint32_t keyCode,
+KeymapAction::KeymapAction(uint32_t keyCode,
                                std::initializer_list<Modifier> ms)
   : action(ActionType::ComboKey),
     mods(Modifier::None),
@@ -62,5 +62,5 @@ KeyboardAction::KeyboardAction(uint32_t keyCode,
 }
 
 // TapOrHold
-KeyboardAction::KeyboardAction(Modifier hold, KeyboardAction* tap)
+KeymapAction::KeymapAction(Modifier hold, KeymapAction* tap)
   : action(ActionType::TapOrHold), mods(hold), code(0), tap(tap) {}

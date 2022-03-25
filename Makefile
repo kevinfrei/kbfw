@@ -44,13 +44,13 @@ USER_CPP_SRCS=\
 	freik68.cpp \
 	karbon.cpp \
 	kb_actions.cpp \
+	kbstate.cpp \
 	keymap.cpp \
 	seriallog.cpp \
 	serial_dual.cpp \
 	spi_2inch_landscape.cpp \
 	split_34.cpp \
 	teensy4.cpp \
-	usb_reporter.cpp \
 	kbfw.ino
 
 ifeq ($(OS),Windows_NT)

@@ -64,7 +64,7 @@ FWSRC = \
 	../split_34.cpp \
 	../kb_actions.cpp \
 	../keymap.cpp \
-	../usb_reporter.cpp
+	../kbstate.cpp
  
 MOCKOBJS = $(addprefix out/, $(patsubst %.cpp, %.${OSUFFIX}, ${MOCKSRC}))
 FWOBJS = $(addprefix out/, $(patsubst ../%, %, $(patsubst %.cpp, %.${OSUFFIX}, ${FWSRC})))

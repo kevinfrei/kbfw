@@ -4,23 +4,23 @@
 Teensy4* mpu;
 Split34* matrix;
 DualSerialScanner* scanner;
-USBReporter* reporter;
+KBState* kbstate;
 SPI2InchLandscape* display;
 Freik68* keymap;
 DebugLog* dbg;
 
-#define ______ KeyboardAction()
-#define KY_(CHR) KeyboardAction(KEY_##CHR)
-#define CN_(CHR) KeyboardAction(KEY_MEDIA_##CHR) // Consumer
-#define MD_(CHR) KeyboardAction(Modifier::CHR)
-#define LS_(NUM) KeyboardAction(ActionType::LayerShift, NUM)
-#define PSH(NUM) KeyboardAction(ActionType::LayerPush, NUM)
-#define POP() KeyboardAction(ActionType::LayerPop)
-#define ROT(...) KeyboardAction({__VA_ARGS__})
-#define CM_(CODE, ...) KeyboardAction(KEY_##CHR, {__VA_ARGS__})
+#define ______ KeymapAction()
+#define KY_(CHR) KeymapAction(KEY_##CHR)
+#define CN_(CHR) KeymapAction(KEY_MEDIA_##CHR) // Consumer
+#define MD_(CHR) KeymapAction(Modifier::CHR)
+#define LS_(NUM) KeymapAction(ActionType::LayerShift, NUM)
+#define PSH(NUM) KeymapAction(ActionType::LayerPush, NUM)
+#define POP() KeymapAction(ActionType::LayerPop)
+#define ROT(...) KeymapAction({__VA_ARGS__})
+#define CM_(CODE, ...) KeymapAction(KEY_##CHR, {__VA_ARGS__})
 // Just modifiers
-#define MODS(...) KeyboardAction(0, {__VA_ARGS__})
-#define TAPHOLD(CHR, KA) KeyboardAction(KEY_##CHR, &KA)
+#define MODS(...) KeymapAction(0, {__VA_ARGS__})
+#define TAPHOLD(CHR, KA) KeymapAction(KEY_##CHR, &KA)
 
 constexpr uint32_t Base = 0;
 constexpr uint32_t Func = 1;
@@ -36,7 +36,7 @@ void InitKarbon() {
   mpu = new Teensy4();
   matrix = new Split34();
   scanner = new DualSerialScanner();
-  reporter = new USBReporter();
+  kbstate = new KBState();
   display = new SPI2InchLandscape();
   keymap = new Freik68({
     // clang-format off

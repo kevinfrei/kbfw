@@ -7,14 +7,14 @@
 #include "keymaps/keymap.h"
 
 class Matrix;
-class KeyboardAction;
+class KeymapAction;
 class Scanner;
 
 class MockKeymap : public Keymap {
-  std::array<std::array<KeyboardAction, 5>, 3> layers;
+  std::array<std::array<KeymapAction, 5>, 3> layers;
 
  protected:
-  const KeyboardAction* getActionForScancode(scancode_t) override;
+  const KeymapAction* getActionForScancode(scancode_t) override;
 
  public:
   void setup(Matrix*) override;

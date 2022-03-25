@@ -18,6 +18,33 @@ enum class ActionType : uint8_t {
   Error
 };
 
+inline const char* getName(ActionType a) {
+  switch (a) {
+    case ActionType::Key:
+      return "Key";
+    case ActionType::Modifier:
+      return "Modifier";
+    case ActionType::ConsumerKey:
+      return "Consumer Key";
+    case ActionType::LayerShift:
+      return "Layer Shift";
+    case ActionType::LayerPush:
+      return "Layer Push";
+    case ActionType::LayerPop:
+      return "Layer Pop";
+    case ActionType::LayerRotate:
+      return "Layer Rotate";
+    case ActionType::ComboKey:
+      return "Combo Key";
+    case ActionType::TapOrHold:
+      return "TapOrHold";
+    case ActionType::Skip:
+      return "Skip";
+    case ActionType::Error:
+      return "Error";
+  }
+}
+
 enum class Modifier : uint8_t {
   None = 0,
   Shf = 1,
@@ -50,27 +77,27 @@ inline bool has(Modifier mods, Modifier flag) {
   return (static_cast<etype>(mods) & static_cast<etype>(flag)) != 0;
 }
 
-class KeyboardAction {
+class KeymapAction {
   ActionType action;
   Modifier mods;
   uint32_t code;
-  KeyboardAction* tap;
+  KeymapAction* tap;
 
  public:
   // 'transparent'
-  KeyboardAction();
+  KeymapAction();
   // Key
-  KeyboardAction(uint32_t keyCode);
+  KeymapAction(uint32_t keyCode);
   // Modifier
-  KeyboardAction(Modifier mod);
+  KeymapAction(Modifier mod);
   // Layer "things"
-  KeyboardAction(ActionType layer, uint8_t val = 0xFF);
+  KeymapAction(ActionType layer, uint8_t val = 0xFF);
   // Layer Rotation
-  KeyboardAction(std::initializer_list<uint8_t> rotate);
+  KeymapAction(std::initializer_list<uint8_t> rotate);
   // Combo key: Key plus a set of modifiers
-  KeyboardAction(uint32_t keyCode, std::initializer_list<Modifier> mods);
+  KeymapAction(uint32_t keyCode, std::initializer_list<Modifier> mods);
   // TapOrHold
-  KeyboardAction(Modifier hold, KeyboardAction* tap);
+  KeymapAction(Modifier hold, KeymapAction* tap);
   ActionType getAction() const {
     return action;
   }
@@ -80,7 +107,41 @@ class KeyboardAction {
   uint32_t getCode() const {
     return code;
   }
-  KeyboardAction* getTap() const {
+  KeymapAction* getTap() const {
     return tap;
   }
+};
+
+class KeyboardResult {
+ protected:
+  bool press;
+
+ public:
+  KeyboardResult(bool isPressed) : press(isPressed) {}
+};
+
+class Keypress : public KeyboardResult {
+ protected:
+  char key;
+
+ public:
+  Keypress(bool isPressed, char k) : KeyboardResult(isPressed), key(k) {}
+};
+
+class Modifiers : public KeyboardResult {
+ protected:
+  uint8_t mods;
+
+ public:
+  Modifiers(bool isPress, uint8_t modifiers)
+    : KeyboardResult(isPress), mods(modifiers) {}
+};
+
+class ConsumerKey : public KeyboardResult {
+ protected:
+  uint16_t consKey;
+
+ public:
+  ConsumerKey(bool isPress, uint16_t consumerKey)
+    : KeyboardResult(isPress), consKey(consumerKey) {}
 };
